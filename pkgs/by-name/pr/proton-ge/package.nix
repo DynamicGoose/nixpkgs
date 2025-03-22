@@ -23,16 +23,15 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = with pkgs; [
-    docker
+    podman
     which
   ];
 
   buildPhase = ''
     export HOME=$(pwd)
-    dockerd-rootless&
     bash ./patches/protonprep-valve-staging.sh
     mkdir build && cd build
-    bash ../configure.sh --build-name=Proton-GE
+    bash ../configure.sh --build-name=Proton-GE --container-engine=podman
     make redist
   '';
   
